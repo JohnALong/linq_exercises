@@ -129,13 +129,14 @@ namespace linq
                 where bank.Symbol == customer.Bank
                     select new 
                     {
+                        Bank_Symbol = customer.Bank,
                         Customer_Name = customer.Name,
                         Bank_Name = bank.Name
                     };
 
             foreach(var val in result)
             {
-                Console.WriteLine($"{val.Customer_Name} banks at {val.Bank_Name}");
+                Console.WriteLine($"{val.Customer_Name} banks at {val.Bank_Name} and the symbol is {val.Bank_Symbol}");
             }
 
             var millionaireGroups = millionaireCustomers.GroupBy(customer => customer.Bank).Select (group => 
