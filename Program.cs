@@ -99,7 +99,8 @@ namespace linq
             // };
             // Build a collection of customers who are millionaires
         
-            var customers = new List<Customer> () {
+            List<Customer> customers = new List<Customer> ()
+            {
                 new Customer () { Name = "Bob Lesman", Balance = 80345.66, Bank = "FTB" },
                 new Customer () { Name = "Joe Landy", Balance = 9284756.21, Bank = "WF" },
                 new Customer () { Name = "Meg Ford", Balance = 487233.01, Bank = "BOA" },
@@ -112,7 +113,31 @@ namespace linq
                 new Customer () { Name = "Sid Brown", Balance = 49582.68, Bank = "CITI" }
 
             };
+
+            List<Bank> banks = new List<Bank>()
+            {
+                new Bank(){ Name="First Tennessee", Symbol="FTB"},
+                new Bank(){ Name="Wells Fargo", Symbol="WF"},
+                new Bank(){ Name="Bank of America", Symbol="BOA"},
+                new Bank(){ Name="Citibank", Symbol="CITI"},
+            };
+
             var millionaireCustomers = customers.Where(customer => customer.Balance >= 1000000);
+
+            var result = from customer in millionaireCustomers
+                from bank in banks
+                where bank.Symbol == customer.Bank
+                    select new 
+                    {
+                        Bank_Symbol = customer.Bank,
+                        Customer_Name = customer.Name,
+                        Bank_Name = bank.Name
+                    };
+
+            foreach(var val in result)
+            {
+                Console.WriteLine($"{val.Customer_Name} banks at {val.Bank_Name} and the symbol is {val.Bank_Symbol}");
+            }
 
             var millionaireGroups = millionaireCustomers.GroupBy(customer => customer.Bank).Select (group => 
             {
@@ -134,6 +159,12 @@ namespace linq
             public string Name { get; set; }
             public double Balance { get; set; }
             public string Bank { get; set; }
+        }
+
+        public class Bank
+        {
+            public string Symbol { get; set; }
+            public string Name { get; set; }
         }
 
         public class BankReport
